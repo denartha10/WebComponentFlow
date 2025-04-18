@@ -1,0 +1,354 @@
+* {
+  font-family: monospace;
+}
+
+/*BOARD STYLING*/
+
+.boardWrapper {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0px;
+  left: 0px;
+  overflow: scroll;
+}
+
+.board {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-size: 30px 30px;
+  background-image: radial-gradient(circle, #b8b8b8bf 1px, rgba(0, 0, 0, 0) 1px);
+  cursor: grab;
+}
+
+.boardDragging {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-size: 30px 30px;
+  background-image: radial-gradient(circle, #b8b8b8bf 1px, rgba(0, 0, 0, 0) 1px);
+  cursor: grabbing;
+}
+
+/* PERCENT STYLING */
+.percent {
+  position: fixed;
+  left: 0;
+  top: 0;
+  font-size: 1rem;
+  padding: 1rem;
+}
+
+/* BUTTON STYLING */
+.buttonWrapper {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  padding: 24px 38px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  z-index: 300;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.buttonAdd {
+  transition: all ease 0.2s;
+  background-color: #4f46e5;
+  padding: 12px;
+  border-radius: 100%;
+  aspect-ratio: 1/1;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  pointer-events: all;
+  box-shadow: 1px 1px 11px -6px rgba(0, 0, 0, 0.75);
+  outline: none;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.buttonAdd:hover {
+  background-color: #3730a3;
+  box-shadow: 2px 2px 12px -6px rgba(0, 0, 0, 0.75);
+  transform: scale(1.05);
+}
+
+.buttonAdd:active {
+  transform: scale(0.95);
+}
+
+.buttonDelete {
+  transition: all ease 0.2s;
+  background-color: #dc2626;
+  padding: 12px;
+  border-radius: 100%;
+  aspect-ratio: 1/1;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  pointer-events: all;
+  box-shadow: 1px 1px 11px -6px rgba(0, 0, 0, 0.75);
+  outline: none;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.buttonDelete:hover {
+  background-color: #b91c1c;
+  box-shadow: 2px 2px 12px -6px rgba(0, 0, 0, 0.75);
+  transform: scale(1.05);
+}
+
+.buttonDelete:active {
+  transform: scale(0.95);
+}
+
+.buttonDeleteHidden {
+  transform: translateY(-100px);
+  transition: all ease 0.2s;
+  background-color: #dc2626;
+  padding: 12px;
+  aspect-ratio: 1/1;
+  border-radius: 100%;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  pointer-events: all;
+  box-shadow: 1px 1px 11px -6px rgba(0, 0, 0, 0.75);
+  outline: none;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* DROPDOWN STYLING */
+.dropdown {
+  pointer-events: all;
+  position: absolute;
+  top: 86px;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border: 2px solid #c4c4c4;
+  border-radius: 6px;
+  box-shadow: 1px 1px 11px -6px rgba(0, 0, 0, 0.75);
+  padding: 12px;
+  transition: all ease 0.2s;
+}
+
+.dropdownHidden {
+  transform: translateX(24px);
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 86px;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border: 2px solid #c4c4c4;
+  border-radius: 6px;
+  box-shadow: 1px 1px 11px -6px rgba(0, 0, 0, 0.75);
+  padding: 12px;
+  transition: all ease 0.2s;
+}
+
+.dropdown .label,
+.dropdownHidden .label {
+  line-height: 1.5rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: #27272a;
+}
+
+.dropdown .input,
+.dropdownHidden .input {
+  line-height: 1.5rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: #27272a;
+  border-radius: 0.375rem;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  background-color: #ffffff0d;
+  border: 1px solid #b2b3b5;
+  box-shadow: 1px 1px 11px -6px rgba(0, 0, 0, 0.75);
+  margin-bottom: 12px;
+  box-sizing: border-box;
+}
+
+.dropdown .buttonRect,
+.dropdownHidden .buttonRect {
+  transition: all ease 0.2s;
+  background-color: #4f46e5;
+  padding: 12px;
+  border-radius: 6px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  pointer-events: all;
+  box-shadow: 1px 1px 11px -6px rgba(0, 0, 0, 0.75);
+  outline: none;
+  border: none;
+}
+
+
+.dropdown .buttonRect:hover,
+.dropdownHidden .buttonRect:hover {
+  background-color: #3730a3;
+  box-shadow: 2px 2px 12px -6px rgba(0, 0, 0, 0.75);
+  transform: scale(1.05);
+}
+
+.dropdown .buttonRect:active,
+.dropdownHidden .buttonRect:active {
+  transform: scale(0.95);
+}
+
+
+/* NODE STYLING */
+.node {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  cursor: grab;
+  background-color: white;
+  border: 2px solid #c4c4c4;
+  border-radius: 6px;
+  box-shadow: 1px 1px 11px -6px rgba(0, 0, 0, 0.75);
+  user-select: none;
+  z-index: 1;
+  transition: border ease 0.2s, box-shadow ease 0.2s;
+  width: 120px;
+  height: 120px;
+}
+
+.nodeSelected {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  cursor: grab;
+  background-color: white;
+  border: 2px solid #e38c29;
+  border-radius: 6px;
+  box-shadow: 1px 1px 11px -6px rgba(0, 0, 0, 0.75);
+  user-select: none;
+  z-index: 1;
+  transition: border ease 0.2s, box-shadow ease 0.2s;
+  width: 120px;
+  height: 120px;
+}
+
+.nodeSelected:hover,
+.node:hover {
+  box-shadow: 2px 2px 12px -6px rgba(0, 0, 0, 0.75);
+}
+
+.nodeInputsWrapper {
+  position: absolute;
+  top: 0px;
+  left: -24px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 12px;
+  pointer-events: none;
+}
+
+.nodeInput {
+  width: 12px;
+  aspect-ratio: 1/1;
+  border-radius: 100%;
+  background-color: #e38c29;
+  cursor: crosshair;
+  pointer-events: all;
+}
+
+.nodeOutputsWrapper {
+  position: absolute;
+  top: 0px;
+  right: -24px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 12px;
+  pointer-events: none;
+}
+
+.nodeOutput {
+  width: 12px;
+  aspect-ratio: 1/1;
+  border-radius: 100%;
+  background-color: #e38c29;
+  cursor: crosshair;
+  pointer-events: all;
+}
+
+/*EDGE STYLING*/
+.edgeWrapper {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.edge {
+  pointer-events: all;
+  stroke: rgba(168, 168, 168, 0.8);
+  stroke-width: 2;
+  fill: transparent;
+  cursor: pointer;
+}
+
+.edgeSelected {
+  pointer-events: all;
+  stroke: rgba(216, 141, 62);
+  stroke-width: 3;
+  fill: transparent;
+  z-index: 100;
+}
+
+.edgeNew {
+  stroke: rgba(168, 168, 168, 0.8);
+  stroke-width: 2;
+  fill: transparent;
+}
+
+.edgeDelete {
+  cursor: pointer;
+  pointer-events: all;
+  transition: all ease 0.1s;
+  z-index: 300;
+}
+
+.edgeDeleteHidden {
+  cursor: pointer;
+  pointer-events: none;
+  opacity: 0;
+  transition: all ease 0.1s;
+  z-index: 300;
+}
+
+.icon {
+  width: 26px;
+  height: 20px;
+  background-color: white;
+  fill: white;
+}
