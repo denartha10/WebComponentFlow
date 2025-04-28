@@ -1,45 +1,30 @@
 import van from 'vanjs-core';
 const { div, button, label, input } = van.tags;
 
-const isValidNodeCount = (inputs, outputs) => {
-  return inputs >= 0 && inputs <= 4 && outputs >= 0 && outputs <= 4;
-};
-
-const handleOnClickAddNode = (e, onClickAdd, states) => {
-  e.stopPropagation();
-  const { numberOfInputs, numberOfOutputs, dropdownOpen } = states;
-
-  const inputs = Number(numberOfInputs.rawVal);
-  const outputs = Number(numberOfOutputs.rawVal);
-
-  if (!isValidNodeCount(inputs, outputs)) return;
-
-  dropdownOpen.val = false;
-  onClickAdd(inputs, outputs);
-  numberOfInputs.val = 0;
-  numberOfOutputs.val = 0;
-};
-
-const toggleDropdown = (e, dropdownOpen) => {
-  e.stopPropagation();
-  dropdownOpen.val = !dropdownOpen.val;
-};
-
-export const Button = ({ showDelete, onClickAdd, onClickDelete }) => {
+export const Button = ({ showDelete, addNode, deleteNode }) => {
   const dropdownOpen = van.state(false);
-  const numberOfInputs = van.state(0);
-  const numberOfOutputs = van.state(0);
-
-  const states = { dropdownOpen, numberOfInputs, numberOfOutputs };
+  const numberOfInputs = van.state(1);
+  const numberOfOutputs = van.state(1);
 
   return div(
     { class: 'buttonWrapper' },
 
     // Delete button
-    button({ onclick: onClickDelete, class: () => showDelete ? 'buttonDelete' : 'buttonDeleteHidden' }, () => 'X'),
+    button({
+      onclick: () => deleteNode(),
+      class: () => showDelete ? 'buttonDelete' : 'buttonDeleteHidden'
+    },
+      'X'
+    ),
 
     // Add (+/-) button
-    button({ class: 'buttonAdd', onclick: (e) => toggleDropdown(e, dropdownOpen) }, () => dropdownOpen.val ? '-' : '+'),
+    button(
+      {
+        class: 'buttonAdd',
+        onclick: (e) => { e.stopPropagation(); dropdownOpen.val = !dropdownOpen.val }
+      },
+      () => dropdownOpen.val ? '-' : '+'
+    ),
 
     // Dropdown
     div(
@@ -54,6 +39,8 @@ export const Button = ({ showDelete, onClickAdd, onClickDelete }) => {
         class: 'input',
         type: 'number',
         value: numberOfInputs,
+        min: 0,
+        max: 2,
         oninput: (e) => numberOfInputs.val = e.target.value
       }),
 
@@ -62,13 +49,15 @@ export const Button = ({ showDelete, onClickAdd, onClickDelete }) => {
         class: 'input',
         type: 'number',
         value: numberOfOutputs,
+        min: 0,
+        max: 2,
         oninput: (e) => numberOfOutputs.val = e.target.value
       }),
 
       // Submit button
       button({
         class: 'buttonRect',
-        onclick: (e) => handleOnClickAddNode(e, onClickAdd, states)
+        onclick: (e) => { e.stopPropagation; addNode(Number(numberOfInputs.rawVal), Number(numberOfOutputs.rawVal)); dropdownOpen.val = false }
       }, 'Add Node')
     )
   );
