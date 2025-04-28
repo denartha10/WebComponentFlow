@@ -1,12 +1,7 @@
 import van from 'vanjs-core';
+import { getCenterCoordinates } from './utilities';
 const { div } = van.tags;
 
-const getCenterCoordinates = (ref) => {
-  const rect = ref.getBoundingClientRect();
-  const centerX = rect.left + Math.abs(rect.right - rect.left) / 2;
-  const centerY = rect.top + Math.abs(rect.bottom - rect.top) / 2;
-  return { centerX, centerY };
-};
 
 /**
  * @typedef {Object} NodeProps
@@ -17,9 +12,8 @@ const getCenterCoordinates = (ref) => {
  * @property {number} numberOutputs - The number of outputs for the node.
  * @property {boolean} selected - Whether the node is selected.
  *
- * @property {function(string, any): void} onMouseDownNode - Callback function when the node is clicked.
+ * @property {function(string, any): void} onSelect - Callback function when the node is clicked.
  * @property {function(number, number, string, number): void} onMouseDownOutput - Callback function when an output is clicked.
- *
  * @property {function(number, number, string, number): void} onMouseEnterInput - Callback function when an input is entered.
  * @property {function(string, number): void} onMouseLeaveInput - Callback function when an input is left.
  */
@@ -31,29 +25,28 @@ const getCenterCoordinates = (ref) => {
  * @returns {HTMLElement} The rendered node element.
  */
 export const NodeComponent = (props) => {
-  const handleMouseEnterInput = (ref, inputIndex) => {
-    const { centerX, centerY } = getCenterCoordinates(ref);
-    props.onMouseEnterInput(centerX, centerY, props.id, inputIndex);
+  const handleMouseEnterInput = (inputId) => {
+    props.onMouseEnterInput(props.id, inputId)
   };
 
-  const handleMouseLeaveInput = (inputIndex) => {
-    props.onMouseLeaveInput(props.id, inputIndex);
+  const handleMouseLeaveInput = () => {
+    props.onMouseLeaveInput()
   };
 
   const handleMouseDownOutput = (ref, e, outputIndex) => {
     e.stopPropagation();
     const { centerX, centerY } = getCenterCoordinates(ref);
-    props.onMouseDownOutput(centerX, centerY, props.id, outputIndex);
+    props.onMouseDownOutput(props.id, outputIndex, { x: centerX, y: centerY });
   };
 
   const renderInputs = () =>
     Array.from({ length: Number(props.numberInputs) }).map((_, index) => {
-      // TODO: find a way to reference this element
-      let inputRef = `input_${Math.random().toString(36).substring(2, 8)}`;
+      let inputId = `input_${Math.random().toString(36).substring(2, 8)}`;
       return div(
         {
           class: 'nodeInput',
-          onmouseenter: (e) => handleMouseEnterInput(e.target, index), //TODO: Temporary fix for reference problem
+          id: inputId,
+          onmouseenter: () => handleMouseEnterInput(inputId),
           onmouseleave: () => handleMouseLeaveInput(index),
         }
       );
@@ -61,12 +54,12 @@ export const NodeComponent = (props) => {
 
   const renderOutputs = () =>
     Array.from({ length: Number(props.numberOutputs) }).map((_, index) => {
-      // TODO: find a way to reference this element
-      let outputRef = `output_${Math.random().toString(36).substring(2, 8)}`;
+      let outputId = `output_${Math.random().toString(36).substring(2, 8)}`;
       return div(
         {
           class: 'nodeOutput',
-          onmousedown: (e) => handleMouseDownOutput(e.target, e, index), //TODO: Temporary fix for reference problem
+          id: outputId,
+          onmousedown: (e) => handleMouseDownOutput(e.target, e, index),
         }
       );
     });
@@ -75,14 +68,16 @@ export const NodeComponent = (props) => {
     {
       id: props.id,
       class: props.selected ? 'nodeSelected' : 'node',
-      style: () => `transform: translate(${props.x}px, ${props.y}px);`,
+      style: () => `transform: translate(${props.position.x}px, ${props.position.y}px);`,
       onmousedown: (e) => {
         e.stopPropagation();
-        props.onMouseDownNode(props.id, e);
+        props.onSelect(e);
       },
     },
+
     // Render Inputs Section
     div({ class: 'nodeInputsWrapper' }, renderInputs()),
+
     // Render Outputs Section
     div({ class: 'nodeOutputsWrapper' }, renderOutputs())
   );
