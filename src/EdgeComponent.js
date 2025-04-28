@@ -12,45 +12,39 @@ const { svg, path, g, circle } = van.tags("http://www.w3.org/2000/svg")
   * @param {number} props.position.y0 - the x and y coordinates of both line ends 
   * @param {number} props.position.x1 - the x and y coordinates of both line ends 
   * @param {number} props.position.y1 - the x and y coordinates of both line ends 
-  * @param {function(): void} props.onMouseDownEdge - Callback function when an edge is clicked
-  * @param {function(): void} props.onClickDelete - Callback to delete edge
+  * @param {function(): void} props.onSelect - Callback function when an edge is clicked
+  * @param {function(): void} props.onDelete - Callback to delete edge
   */
 export const EdgeComponent = (props) => {
 
-  const middlePoint = van.state({
-    x: props.position.x0 + (props.position.x1 - props.position.x0) / 2,
-    y: props.position.y0 + (props.position.y1 - props.position.y0) / 2
-  })
-
   const handleOnMouseDownEdge = (e) => {
     e.stopPropagation();
-    props.onMouseDownEdge(e.currentTarget.id, e);
+    props.onSelect();
   }
 
   const handleOnClickDelete = (e) => {
     e.stopPropagation();
-    props.onClickDelete()
+    props.onDelete()
   }
 
-  const calculateOffset = (value) => {
-    return value / 2
-  }
 
   const { x0, y0, x1, y1 } = props.position;
-  const dx = calculateOffset(Math.abs(x1 - x0));
+  const dX = Math.abs(x1 - x0) / 2;
+  const mX = x0 + (x1 - x0) / 2
+  const mY = y0 + (y1 - y0) / 2
 
   return svg(
     { class: 'edgeWrapper' },
     path({
       class: props.isNew ? 'edgeNew' : props.selected ? 'edgeSelected' : 'edge',
-      d: `M ${x0} ${y0} C ${x0 + dx} ${y0}, ${x1 - dx} ${y1}, ${x1} ${y1}`,
+      d: `M ${x0} ${y0} C ${x0 + dX} ${y0}, ${x1 - dX} ${y1}, ${x1} ${y1}`,
       onmousedown: handleOnMouseDownEdge
     }),
 
     g(
       {
         class: props.selected ? 'edgeDelete' : 'edgeDeleteHidden',
-        transform: `translate(${middlePoint.val.x}, ${middlePoint.val.y - (props.selected ? 24 : 0)})`,
+        transform: `translate(${mX}, ${mY - (props.selected ? 24 : 0)})`,
         onmousedown: handleOnClickDelete
       },
       circle({ cx: 0, cy: 0, r: 14, fill: 'rgb(175, 59, 59)', class: 'circle' }),
