@@ -57,10 +57,17 @@
  */
 
 /**
- * @typedef {Object} State
+ * @typedef {Object} StateObject
  * @property {CustomNode[]} nodes - Array of all nodes
  * @property {Edge[]} edges - Array of all edges
  * @property {UIState} ui - UI-specific state
+ */
+
+/**
+  * @typedef {Object} State
+  * @property {StateObject[]} past 
+  * @property {StateObject} present
+  * @property {StateObject[]} future
  */
 
 /**
