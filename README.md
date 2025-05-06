@@ -8,6 +8,7 @@ WebComponentFlow is a lightweight, minimal-dependency flowboard library built wi
 * Zoom and pan the board with keyboard modifiers
 * Dark mode support via CSS class toggle
 * Bundled with VanJS so consumers don’t need separate dependencies
+* Bundled with default CSS so consumers do not need to style themselves
 * UMD build for easy inclusion via CDN or npm
 
 ## Installation
@@ -23,7 +24,6 @@ npm install @leanacht/webcomponent-flow
 #### UNPKG
 
 ```html
-<link rel="stylesheet" href="https://unpkg.com/@leanacht/webcomponent-flow/dist/flow-app.css" />
 <script src="https://unpkg.com/@leanacht/webcomponent-flow/dist/flow-app.umd.js"></script>
 ```
 
@@ -48,7 +48,7 @@ npm install @leanacht/webcomponent-flow
 
 ## API
 
-### `HTMLFlow(options)`
+### `WebComponentFlow(options)`
 
 Creates and mounts a new flow board.
 
@@ -61,7 +61,7 @@ Returns an object with methods:
 
 * `addNode(numInputs, numOutputs)` — Add a node.
 * `removeNode()` — Remove the selected node.
-* `addEdge(draft)` — (Internal) Commit a draft edge.
+* `addEdge(nodeOutput, nodeInput)` — (Internal) Commit a draft edge.
 * `removeEdge()` — Remove the selected edge.
 * `undo()` — Undo last action.
 * `redo()` — Redo last undone action.
@@ -69,12 +69,6 @@ Returns an object with methods:
 ## Dark Mode
 
 Toggle dark mode by adding/removing the `dark` class on `<html>` or `<body>`. The library exposes `toggleDarkMode()` if needed.
-
-```css
-/* in your CSS */
-.dark .node { background: #333; border-color: #666; }
-.dark .edge { stroke: #aaa; }
-```
 
 ## Development
 
