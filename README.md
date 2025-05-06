@@ -35,7 +35,7 @@ npm install @leanacht/webcomponent-flow
 
   <script>
     // Initialize the board
-    const flow = HTMLFlow({
+    const flow = WebComponentFlow({
       container: '#board',
       darkMode: false
     });
