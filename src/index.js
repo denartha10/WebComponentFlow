@@ -41,6 +41,5 @@ export default function HTMLFlow({
     //  applyTheme(darkMode)
     //},
     // you could also expose undo/redo, removeNode, ,etc
-    // but I am not going to
   }
 }

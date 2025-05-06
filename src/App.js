@@ -8,9 +8,6 @@ const { div } = van.tags
 
 
 export const App = ({ board }) => {
-  // NOTE: BOARD IS NOW INJECTED BY YOUR BUNDLER ENTRYPOINT
-
-  // globally if the keydown is command key set command key state to down
   window.addEventListener('keydown', (e) => {
     board.setCommandModifier(e.metaKey || e.ctrlKey)
     board.setShiftModifier(e.shiftKey)
@@ -31,7 +28,6 @@ export const App = ({ board }) => {
     }
   })
 
-  // globally if the keyup is command key set command key state to up
   window.addEventListener('keyup', (e) => { board.setCommandModifier(e.metaKey || e.ctrlKey); board.setShiftModifier(e.shiftKey) })
 
   return div(
