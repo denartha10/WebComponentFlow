@@ -313,15 +313,14 @@ export function createBoardStore() {
 
     if (d.mode === 'edge' && d.isInInput && state.present.ui.draftEdge) {
       const draft = state.present.ui.draftEdge;
-      const {
-        centerX,
-        centerY
-      } = getCenterCoordinates(document.getElementById(draft.inputId));
+      const { centerX, centerY } = getCenterCoordinates(document.getElementById(draft.inputId));
 
       addEdge({
         ...draft,
         id: `edge_${draft.nodeStartId}_${draft.outputId}_${draft.nodeEndId}_${draft.inputId}`,
         endPosition: {
+          // centerX/centerY are now _inside_ the wrapper,
+          // so subtract your pan-offset and divide by scale:
           x: (centerX - state.present.ui.offset.x) / state.present.ui.scale,
           y: (centerY - state.present.ui.offset.y) / state.present.ui.scale
         }

@@ -2,10 +2,18 @@
 
 
 // helper function to get the center coordinates of an element
-export function getCenterCoordinates(ref) {
-  const rect = ref.getBoundingClientRect();
-  const centerX = rect.left + Math.abs(rect.right - rect.left) / 2;
-  const centerY = rect.top + Math.abs(rect.bottom - rect.top) / 2;
+//export function getCenterCoordinates(ref) {
+//  const rect = ref.getBoundingClientRect();
+//  const centerX = rect.left + Math.abs(rect.right - rect.left) / 2;
+//  const centerY = rect.top + Math.abs(rect.bottom - rect.top) / 2;
+//  return { centerX, centerY };
+//};
+
+export function getCenterCoordinates(ref, container = document.getElementById('boardWrapper')) {
+  const elRect = ref.getBoundingClientRect();
+  const contRect = container.getBoundingClientRect();
+  const centerX = (elRect.left + elRect.right) / 2 - contRect.left;
+  const centerY = (elRect.top + elRect.bottom) / 2 - contRect.top;
   return { centerX, centerY };
 };
 
