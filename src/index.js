@@ -7,11 +7,10 @@ export default function HTMLFlow({
   container = document.body, // DOM node or selector
   darkMode = false // initial theme
 } = {}) {
-  console.log("1) create your board store")
+
   // 1) create your board store
   const board = createBoardStore()
 
-  console.log("2) mount the App into the container")
   // 2) mount the App into the container
   const mountPoint =
     typeof container === 'string'
@@ -23,23 +22,20 @@ export default function HTMLFlow({
     App({ board })
   )
 
-
-  console.log("3) theme: add a class on <html> or <body>, toggle as needed")
-  //// 3) theme: add a class on <html> or <body>, toggle as needed
-  //function applyTheme(isDark) {
-  //  board.setDarkMode(isDark)
-  //}
-  //
-  //// expose only what you want
-  //applyTheme(darkMode)
+  // set the theme
+  board.setDarkMode(darkMode)
 
   // expose only what you want
   return {
-    addNode: board.addNode,
-    //toggleDarkMode() {
-    //  darkMode = !darkMode
-    //  applyTheme(darkMode)
-    //},
+    addNode: (numberInputs, numberOutputs, metadata = {}) => board.addNode(numberInputs, numberOutputs, metadata),
+    removeNode: (nodeObject) => board.removeNode(nodeObject.id),
+
+    //addEdge: (input, output, metadata) => { },
+    //removeEdge: (edgeObject) => board.removeEdge(edgeObject.id),
+
+    toggleDarkMode: () => { darkMode = !darkMode; board.setDarkMode(darkMode) },
+    getModel: () => board.getModel()
+
     // you could also expose undo/redo, removeNode, ,etc
   }
 }

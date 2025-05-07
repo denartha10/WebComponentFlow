@@ -19,6 +19,7 @@ export function createBoardStore() {
           x: 0,
           y: 0
         },
+        isDarkMode: false,
         isCommandPressed: false,
         isShiftPressed: false,
         selectedNode: null,
@@ -126,7 +127,7 @@ export function createBoardStore() {
     state.present.ui.selectedEdge = edgeId;
   }
 
-  function addNode(numberInputs, numberOutputs) {
+  function addNode(numberInputs, numberOutputs, metadata = {}) {
     const wrapper = document.getElementById('boardWrapper');
     const rect = wrapper.getBoundingClientRect();
 
@@ -140,18 +141,24 @@ export function createBoardStore() {
     const x = Math.random() * (xMax - xMin) + xMin;
     const y = Math.random() * (yMax - yMin) + yMin;
 
-    // 3) Create the node at that board-space point:
-    state.present.nodes.push({
+    // 3 new node
+    const node = {
       id: `node_${Math.random().toString(36).slice(2, 8)}`,
       numberInputs,
       numberOutputs,
       position: {
         x,
         y
-      }
-    });
+      },
+      metadata: metadata
+    }
+
+    // 4) Create the node at that board-space point:
+    state.present.nodes.push(node);
 
     set({ ...state.present })
+
+    return node
   }
 
   function removeNode(nodeId = state.present.ui.selectedNode) {
@@ -378,6 +385,18 @@ export function createBoardStore() {
     clampOffset()
   }
 
+  function setDarkMode(isdarkmode) {
+    state.present.ui.isDarkMode = isdarkmode
+  }
+
+  function getModel() {
+    return {
+      nodes: snapshot(state.present.nodes),
+      edges: snapshot(state.present.edges),
+    }
+  }
+
+
   return {
     state,
     setCommandModifier,
@@ -393,6 +412,8 @@ export function createBoardStore() {
     startEdgeCreation,
     removeEdge,
     zoomBy,
+    setDarkMode,
+    getModel,
 
     undo,
     redo

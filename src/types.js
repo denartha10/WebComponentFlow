@@ -10,6 +10,7 @@
  * @property {Position} position - Position of the node
  * @property {number} numberInputs - Number of input connections
  * @property {number} numberOutputs - Number of output connections
+ * @property {object} metadata
  */
 
 /**
@@ -21,6 +22,7 @@
  * @property {string} outputId
  * @property {string} nodeEndId - ID of the end node
  * @property {string} inputId
+ * @property {object} metadata
  */
 
 /**
@@ -49,7 +51,9 @@
  * @typedef {Object} UIState
  * @property {number} scale - Zoom level (typically 1 to 2)
  * @property {Position} offset - Pan offset of the board
+ * @property {boolean} isDarkMode - Dark Mode on or off
  * @property {boolean} isCommandPressed - Whether Cmd/Ctrl is pressed
+ * @property {boolean} isShiftPressed - Whether shift is pressed
  * @property {string | null} selectedNode - Currently selected node ID
  * @property {string | null} selectedEdge - Currently selected edge ID
  * @property {Edge | null} draftEdge - Draft edge information
