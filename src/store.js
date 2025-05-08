@@ -5,6 +5,7 @@ import {
 
 /// <reference path="./types.js" />
 
+
 export function createBoardStore() {
 
   /** @type{State} */
@@ -301,9 +302,17 @@ export function createBoardStore() {
 
       clampOffset()
     } else if (d.mode === 'edge' && state.present.ui.draftEdge) {
+      // get wrapper origin
+      const wrapper = document.getElementById('boardWrapper');
+      const wrapRect = wrapper.getBoundingClientRect();
+
+      // convert event.clientX/Y → wrapper-local coords
+      const localX = x - wrapRect.left;
+      const localY = y - wrapRect.top;
+
       state.present.ui.draftEdge.endPosition = {
-        x: (x - state.present.ui.offset.x) / state.present.ui.scale,
-        y: (y - state.present.ui.offset.y) / state.present.ui.scale
+        x: (localX - state.present.ui.offset.x) / state.present.ui.scale,
+        y: (localY - state.present.ui.offset.y) / state.present.ui.scale
       };
     }
   }
